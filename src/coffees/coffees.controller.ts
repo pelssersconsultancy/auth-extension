@@ -13,15 +13,18 @@ import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Role } from 'src/users/enums/role.enum';
 import { Roles } from '../iam/authorization/decorators/roles.decorator';
-import { Permissions } from 'src/iam/authorization/decorators/permissions.decorator';
-import { CoffeesPermission } from './coffees.permission';
+// import { Permissions } from 'src/iam/authorization/decorators/permissions.decorator';
+// import { CoffeesPermission } from './coffees.permission';
+import { Policies } from 'src/iam/authorization/decorators/policies.decorator';
+import { FrameworkContributorPolicy } from 'src/iam/authorization/policies/framework-contributor.policy';
 
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
 
   // @Roles(Role.Admin)
-  @Permissions(CoffeesPermission.CreateCoffee)
+  // @Permissions(CoffeesPermission.CreateCoffee)
+  @Policies(new FrameworkContributorPolicy())
   @Post()
   create(@Body() createCoffeeDto: CreateCoffeeDto) {
     return this.coffeesService.create(createCoffeeDto);
